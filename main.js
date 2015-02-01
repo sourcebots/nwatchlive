@@ -188,7 +188,7 @@ var sse = new SSE([]);
 
 app.get('/stream', sse.init);
 
-Stat.onValue(function(x) {
+Stat.debounce(250).onValue(function(x) {
     sse.send(x);
     sse.updateInit([x]);
 });
