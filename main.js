@@ -68,15 +68,21 @@ var watchTCP = function(host, port) {
 
 var watchChild = function(child, args) {
     return function(ack, err) {
-        var chld = child_process.spawn(child, args);
+        var chld = child_process.spawn(child, args, {
+            'stdio': ['ignore', 'pipe', 'pipe']
+        });
+        var io = '';
+        var getIO = function(chunk) {
+            io += chunk
+        };
+        chld.stdout.on('data', getIO);
+        chld.stderr.on('data', getIO);
         chld.on('error', function(e) {
             err(e.message);
         });
         chld.on('exit', function(code, signal) {
-            if (signal !== null) {
-                err(signal);
-            } else if (code != 0) {
-                err('Exited with code ' + code);
+            if (signal !== null || code != 0) {
+                err(io);
             } else {
                 ack();
             }
