@@ -21,8 +21,7 @@
                 }
             }
         };
-        es.onmessage = function(evt) {
-            var dat = JSON.parse(evt.data);
+        var receiveData = function(dat) {
             var tab = document.getElementById('services');
             for (var service in dat) {
                 var serviceID = 'srv-' + service;
@@ -51,6 +50,16 @@
                 }
             }
         };
+        es.onmessage = function(evt) {
+            var dat = JSON.parse(evt.data);
+            receiveData(dat);
+        };
+        es.onerror = function(err) {
+            receiveData({'Monitor': 'offline'});
+        };
+        es.onopen = function() {
+            receiveData({'Monitor': null});
+        };
     </script>
   </head>
   <body>
@@ -58,6 +67,7 @@
       <tr>
         <th>Service</th><th>Status</th>
       </tr>
+      <tr class="ok" id="srv-Monitor"><td>Monitor</td><td>Connecting...</td></tr>
     </table>
   </body>
 </html>
