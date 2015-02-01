@@ -1,5 +1,31 @@
+body {
+    padding: 0;
+    margin: 0;
+
+    font-family: Helvetica, sans-serif;
+    font-size: 18pt;
+}
+
 h1 {
     color: red;
+}
+
+#services {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-collapse: collapse;
+    padding: 0;
+    table-layout: fixed;
+}
+
+#services tr th:nth-child(1) {
+    width: 20%;
+}
+
+#services tr td:nth-child(1) {
+    text-align: right;
+    padding-right: 2em;
 }
 
 .ok {
