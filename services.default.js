@@ -15,4 +15,21 @@ addWatcher('DNS', function(ack, err) {
         }
     });
 });
+addWatcher('Negative DNS', function(ack, err) {
+    dns.resolve('nonexistant.example.com', function(e, addresses) {
+        if (e) {
+            if (e.errno == 'ENOTFOUND') {
+                ack();
+            } else {
+                err(e.message);
+            }
+        } else {
+            if (addresses.length > 0) {
+                err("false address generated: " + addresses[0]);
+            } else {
+                err("false positive (empty) record");
+            }
+        }
+    });
+});
 
