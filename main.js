@@ -95,7 +95,7 @@ var watchPing = function(target) {
 };
 
 var watchPing6 = function(target) {
-    return watchChild('ping6', ['-c', '1', '-W', '3', target]);
+    return watchChild('ping6', ['-c', '1', target]);
 };
 
 var context = vm.createContext({
