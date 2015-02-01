@@ -88,6 +88,10 @@ var watchPing = function(target) {
     return watchChild('ping', ['-c', '1', '-W', '3', target]);
 };
 
+var watchPing6 = function(target) {
+    return watchChild('ping6', ['-c', '1', '-W', '3', target]);
+};
+
 var context = vm.createContext({
     'addWatcher': function(name, watcher) {
         watchers[name] = watcher;
@@ -96,6 +100,7 @@ var context = vm.createContext({
     'watchChild': watchChild,
     'watchTCP': watchTCP,
     'watchPing': watchPing,
+    'watchPing6': watchPing6,
     'require': require
 });
 opt.argv.forEach(function(sfile) {
