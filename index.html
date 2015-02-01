@@ -8,11 +8,14 @@
         var es = new EventSource('$ROOT$/stream');
         var markError = function(row) {
             var setError = function() {
-                row.className = 'error';
+                if (row.className == 'errorf')
+                    row.className = 'error';
             };
             var setErrorFlash = function() {
-                row.className = 'errorf';
+                if (row.className == 'error')
+                    row.className = 'errorf';
             };
+            row.className = 'errorf';
             for (var i = 0; i < 17; ++i) {
                 if (i % 2 == 0) {
                     setTimeout(setError, 100*i);
