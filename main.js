@@ -1,10 +1,10 @@
 var fs = require('fs');
 var vm = require('vm');
-var http = require('http');
 var net = require('net');
 var child_process = require('child_process');
 var Bacon = require('baconjs');
 var SSE = require('express-sse');
+var request = require('request');
 
 var opt = require('node-getopt').create([
   ['h', 'help', 'display this help'],
@@ -30,14 +30,14 @@ var watchers = {};
 
 var watchHTTP = function(url) {
     return function(ack, err) {
-        http.get(url, function(res) {
-            if (res.statusCode == 200) {
-                ack();
+        request(url, function(e, response, body) {
+            if (e) {
+                err(e.message);
+            } else if (response.statusCode != 200) {
+                err("status " + response.statusCode);
             } else {
-                err("Received " + res.statusCode);
+                ack();
             }
-        }).on('error', function(e) {
-            err(e.message);
         });
     };
 };
