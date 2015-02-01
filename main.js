@@ -101,7 +101,8 @@ var context = vm.createContext({
     'watchTCP': watchTCP,
     'watchPing': watchPing,
     'watchPing6': watchPing6,
-    'require': require
+    'require': require,
+    'console': console
 });
 opt.argv.forEach(function(sfile) {
     var services = fs.readFileSync(sfile);
