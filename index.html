@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Monitor</title>
+    <link rel="stylesheet" href="static/main.css">
+    <script>
+        var es = new EventSource('$ROOT$/stream');
+        var markError = function(row) {
+            var setError = function() {
+                row.className = 'error';
+            };
+            var setErrorFlash = function() {
+                row.className = 'errorf';
+            };
+            for (var i = 0; i < 17; ++i) {
+                if (i % 2 == 0) {
+                    setTimeout(setError, 100*i);
+                } else {
+                    setTimeout(setErrorFlash, 100*i);
+                }
+            }
+        };
+        es.onmessage = function(evt) {
+            var dat = JSON.parse(evt.data);
+            var tab = document.getElementById('services');
+            for (var service in dat) {
+                var serviceID = 'srv-' + service;
+                var elem = document.getElementById(serviceID);
+                if (elem === null) {
+                    elem = document.createElement('tr');
+                    elem.setAttribute('id', serviceID);
+                    var key = document.createElement('td');
+                    var keyN = document.createTextNode(service);
+                    key.appendChild(keyN);
+                    var value = document.createElement('td');
+                    elem.appendChild(key);
+                    elem.appendChild(value);
+                    tab.appendChild(elem);
+                }
+                var newStatus = dat[service];
+                var statusField = elem.childNodes[1];
+                if (newStatus === null) {
+                    elem.className = 'ok';
+                    statusField.innerHTML = 'OK';
+                } else {
+                    if (elem.className !== 'error') {
+                        markError(elem);
+                    }
+                    statusField.innerHTML = newStatus;
+                }
+            }
+        };
+    </script>
+  </head>
+  <body>
+    <h1>wat: $ROOT$</h1>
+    <table id="services">
+      <tr>
+        <th>Service</th><th>Status</th>
+      </tr>
+    </table>
+  </body>
+</html>
+

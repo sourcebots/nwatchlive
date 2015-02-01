@@ -1,0 +1,16 @@
+h1 {
+    color: red;
+}
+
+.ok {
+    background-color: green;
+}
+
+.error {
+    background-color: red;
+}
+
+.errorf {
+    background-color: yellow;
+}
+
