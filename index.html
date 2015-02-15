@@ -5,7 +5,7 @@
     <title>Monitor</title>
     <link rel="stylesheet" href="static/main.css">
     <script>
-        var es = new EventSource('$ROOT$/stream');
+        var es = new EventSource('stream');
         var markError = function(row) {
             var setError = function() {
                 if (row.className == 'errorf')

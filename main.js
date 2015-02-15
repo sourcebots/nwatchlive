@@ -184,7 +184,6 @@ Stat.onValue(function(val) {
 var express = require('express');
 var app = express();
 var root = fs.readFileSync(__dirname + '/index.html', {'encoding': 'utf-8'});
-root = root.replace('$ROOT$', '');
 
 app.get('/', function(req, res) {
     res.header('Content-Type', 'text/html; charset=utf-8');
