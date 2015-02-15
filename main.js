@@ -174,7 +174,7 @@ var runQueries = function() {
 
 runQueries();
 
-var INTERVAL = 6;
+var INTERVAL = 12;
 setInterval(runQueries, INTERVAL*1000);
 
 Stat.onValue(function(val) {
