@@ -21,7 +21,7 @@ addWatcher('DNS', function(ack, err) {
 addWatcher('Negative DNS', function(ack, err) {
     dns.resolve('nonexistant.example.com', function(e, addresses) {
         if (e) {
-            if (e.errno == 'ENOTFOUND') {
+            if (e.errno == 'ENOTFOUND' || e.errno == 'ETIMEOUT') {
                 ack();
             } else {
                 err(e.message);
