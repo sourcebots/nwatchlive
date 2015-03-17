@@ -15,6 +15,9 @@ addWatcher('DNS', function(ack, err) {
         }
     });
 });
+/**
+ * Check a non-existent name to ward off captive portals.
+ */
 addWatcher('Negative DNS', function(ack, err) {
     dns.resolve('nonexistant.example.com', function(e, addresses) {
         if (e) {
