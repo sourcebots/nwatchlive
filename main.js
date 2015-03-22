@@ -9,6 +9,7 @@ var request = require('request');
 var opt = require('node-getopt').create([
   ['h', 'help', 'display this help'],
   ['v', 'version', 'show version'],
+  ['q', 'quiet', "don't print every update"],
   ['p', 'port=PORT', 'listen port']
 ])
 .bindHelp()
@@ -178,7 +179,9 @@ var INTERVAL = 12;
 setInterval(runQueries, INTERVAL*1000);
 
 Stat.onValue(function(val) {
-    console.log(val);
+    if (!opt.options.quiet) {
+        console.log(val);
+    }
 });
 
 var express = require('express');
