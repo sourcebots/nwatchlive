@@ -10,6 +10,7 @@ var opt = require('node-getopt').create([
   ['h', 'help', 'display this help'],
   ['v', 'version', 'show version'],
   ['q', 'quiet', "don't print every update"],
+  ['a', 'accept-self-signed', "accept self signed HTTPS certificates"],
   ['p', 'port=PORT', 'listen port']
 ])
 .bindHelp()
@@ -25,6 +26,11 @@ var port = opt.options.port || 3050;
 if (opt.argv.length == 0) {
     console.log('no services specified.');
     process.exit(1);
+}
+
+if (opt.options['accept-self-signed']) {
+    // Avoids DEPTH_ZERO_SELF_SIGNED_CERT error for self-signed certs
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 
 var watchers = {};
