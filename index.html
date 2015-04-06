@@ -55,6 +55,10 @@
         };
         es.onmessage = function(evt) {
             var dat = JSON.parse(evt.data);
+            if (console) {
+                console.log("Got message:");
+                console.dir(dat);
+            }
             receiveData(dat);
         };
         es.onerror = function(err) {
