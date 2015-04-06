@@ -78,10 +78,11 @@
                     pingHandle = null;
                 }
                 var interval = dat.ping;
+                var timeToError = interval * 2.5;
                 pingHandle = setTimeout(function() {
                     var msg = "No pings for " + interval + " seconds.";
                     receiveData({'Monitor': msg});
-                }, interval * 2.5 * 1000);
+                }, timeToError * 1000);
             }
 
             var statuses = dat.statuses;
