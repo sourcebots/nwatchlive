@@ -220,6 +220,14 @@ Stat.debounce(700).onValue(function(x) {
     sse.updateInit([val]);
 });
 
+// setup pings -- needed so that the client can tell when either the
+// client or server has become disconnected from the network without
+// actively dying or raising an error.
+var PING_INTERVAL = 5; // seconds
+setInterval(function() {
+    sse.send({'ping': PING_INTERVAL});
+}, PING_INTERVAL * 1000);
+
 app.use('/static', express.static(__dirname + '/static'));
 
 var server = app.listen(port, '::', function() {

@@ -61,11 +61,28 @@
                 }
             }
         };
+
+        var pingHandle;
+
         es.onmessage = function(evt) {
             var dat = JSON.parse(evt.data);
 
             console.log("Got message:");
             console.dir(dat);
+
+            receiveData({'Monitor': null});
+
+            if ('ping' in dat) {
+                if (pingHandle) {
+                    clearTimeout(pingHandle);
+                    pingHandle = null;
+                }
+                var interval = dat.ping;
+                pingHandle = setTimeout(function() {
+                    var msg = "No pings for " + interval + " seconds.";
+                    receiveData({'Monitor': msg});
+                }, interval * 2.5 * 1000);
+            }
 
             var statuses = dat.statuses;
             receiveData(statuses);
