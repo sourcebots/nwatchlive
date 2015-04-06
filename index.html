@@ -59,7 +59,8 @@
                 console.log("Got message:");
                 console.dir(dat);
             }
-            receiveData(dat);
+            var statuses = dat.statuses;
+            receiveData(statuses);
         };
         es.onerror = function(err) {
             receiveData({'Monitor': 'offline'});

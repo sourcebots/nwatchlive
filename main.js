@@ -190,6 +190,12 @@ Stat.onValue(function(val) {
     }
 });
 
+var build_content = function(statuses) {
+    return {
+        'statuses': statuses,
+    };
+};
+
 var express = require('express');
 var app = express();
 var root = fs.readFileSync(__dirname + '/index.html', {'encoding': 'utf-8'});
@@ -201,7 +207,7 @@ app.get('/', function(req, res) {
 
 app.get('/status', function(req, res) {
     res.header('Content-Type', 'application/json');
-    res.end(JSON.stringify(statuses));
+    res.end(JSON.stringify(build_content(statuses)));
 });
 
 var sse = new SSE([]);
@@ -209,8 +215,9 @@ var sse = new SSE([]);
 app.get('/stream', sse.init);
 
 Stat.debounce(700).onValue(function(x) {
-    sse.send(x);
-    sse.updateInit([x]);
+    var val = build_content(x);
+    sse.send(val);
+    sse.updateInit([val]);
 });
 
 app.use('/static', express.static(__dirname + '/static'));
