@@ -89,9 +89,12 @@
             receiveData(statuses);
         };
         es.onerror = function(err) {
+            console.log('stream error:');
+            console.dir(err);
             receiveData({'Monitor': 'offline'});
         };
         es.onopen = function() {
+            console.log('stream open.');
             receiveData({'Monitor': null});
         };
     </script>
