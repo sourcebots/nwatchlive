@@ -5,6 +5,14 @@
     <title>Monitor</title>
     <link rel="stylesheet" href="static/main.css">
     <script>
+        if (!console) {
+            var nop = function(){};
+            console = {
+                'log': nop,
+                'dir': nop,
+            };
+        }
+
         var es = new EventSource('stream');
         var markError = function(row) {
             var setError = function() {
@@ -55,10 +63,10 @@
         };
         es.onmessage = function(evt) {
             var dat = JSON.parse(evt.data);
-            if (console) {
-                console.log("Got message:");
-                console.dir(dat);
-            }
+
+            console.log("Got message:");
+            console.dir(dat);
+
             var statuses = dat.statuses;
             receiveData(statuses);
         };
