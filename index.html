@@ -4,7 +4,15 @@
     <meta charset="utf-8">
     <title>Monitor</title>
     <link rel="stylesheet" href="static/main.css">
-    <script>
+  </head>
+  <body>
+    <table id="services">
+      <tr>
+        <th>Service</th><th>Status</th>
+      </tr>
+      <tr class="ok" id="srv-Monitor"><td>Monitor</td><td>Connecting...</td></tr>
+    </table>
+    <script type="text/javascript">
         if (!console) {
             var nop = function(){};
             console = {
@@ -98,13 +106,5 @@
             receiveData({'Monitor': null});
         };
     </script>
-  </head>
-  <body>
-    <table id="services">
-      <tr>
-        <th>Service</th><th>Status</th>
-      </tr>
-      <tr class="ok" id="srv-Monitor"><td>Monitor</td><td>Connecting...</td></tr>
-    </table>
   </body>
 </html>
