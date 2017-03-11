@@ -3,6 +3,7 @@ var vm = require('vm');
 var net = require('net');
 var child_process = require('child_process');
 var Bacon = require('baconjs');
+var EventSource = require('eventsource');
 var SSE = require('express-sse');
 var request = require('request');
 
@@ -48,6 +49,50 @@ var watchHTTP = function(url) {
                 ack();
             }
         });
+    };
+};
+
+var watchStream = function(url, eventNames) {
+    var EventSource_OPEN = 1;
+    var delay = QUERY_INTERVAL / 2;
+    var timeoutMessage = function() {
+        var names = eventNames.slice();
+        var namesStr = names.pop();
+        if (names.length > 0) {
+            namesStr = names.join("', '") + "' or '" + namesStr;
+        }
+
+        return "Connection succeeded, but no '" + namesStr + "' events detected were before timeout (" + delay + "s)";
+    }();
+
+    return function(ack, err) {
+        if (eventNames.length == 0) {
+            err("No event names to check!");
+            return;
+        }
+        var es = new EventSource(url);
+        var doAck = function() {
+            ack();
+            es.close();
+        };
+        eventNames.forEach(function(eventName) {
+            es.addEventListener(eventName, doAck);
+        });
+        es.onerror = function(ev) {
+            if (!ev.status) {
+                err("connection error");
+            } else {
+                err("status " + ev.status);
+            }
+            es.close();
+        };
+        setTimeout(function() {
+            if (es.readyState == EventSource_OPEN) {
+                err(timeoutMessage);
+            } else {
+                err('unexpected error: readyState=' + es.readyState + " after " + delay + "s");
+            }
+        }, delay * 1000);
     };
 };
 
@@ -112,6 +157,7 @@ var context = vm.createContext({
         watchers[name] = watcher;
     },
     'watchHTTP': watchHTTP,
+    'watchStream': watchStream,
     'watchChild': watchChild,
     'watchTCP': watchTCP,
     'watchPing': watchPing,

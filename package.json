@@ -19,6 +19,7 @@
     "express": "~4.11.1",
     "node-getopt": "~0.2.3",
     "baconjs": "~0.7.43",
+    "eventsource": "~0.2.2",
     "express-sse": "~0.2.0",
     "request": "~2.51.0"
   }
