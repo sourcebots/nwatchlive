@@ -80,7 +80,7 @@ var watchChild = function(child, args) {
         });
         var io = '';
         var getIO = function(chunk) {
-            io += chunk
+            io += chunk;
         };
         chld.stdout.on('data', getIO);
         chld.stderr.on('data', getIO);
