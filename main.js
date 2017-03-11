@@ -6,6 +6,8 @@ var Bacon = require('baconjs');
 var SSE = require('express-sse');
 var request = require('request');
 
+var QUERY_INTERVAL = 12; // seconds
+
 var opt = require('node-getopt').create([
   ['h', 'help', 'display this help'],
   ['v', 'version', 'show version'],
@@ -181,8 +183,7 @@ var runQueries = function() {
 
 runQueries();
 
-var INTERVAL = 12;
-setInterval(runQueries, INTERVAL*1000);
+setInterval(runQueries, QUERY_INTERVAL*1000);
 
 Stat.onValue(function(val) {
     if (!opt.options.quiet) {
